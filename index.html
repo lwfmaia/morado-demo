@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>morado · Açaí puro do Brasil (demo)</title>
+<meta name="description" content="MORADO: açaí puro de Brasil, procesado en nuestra propia fábrica de Lisboa y servido en Málaga. Sitio de demostración.">
+<link rel="icon" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#4A0E4E; --purple-deep:#2E0832; --purple-ink:#240627;
+  --green:#3E7C3A; --green-deep:#2C5A29;
+  --cream:#F4EDE4; --cream-2:#EBE1D4; --paper:#FBF7F1;
+  --mauve:#7A5A7E; --mauve-soft:#C9B4C6;
+  --sun:#F2994A;
+  --ink:#2A1A2C; --muted:#6B5A6C;
+  --line:rgba(74,14,78,.14);
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --r:18px;
+  --wrap:1200px;
+  --pad:clamp(20px,5vw,48px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.05;margin:0;letter-spacing:-.015em;font-variation-settings:"opsz" 144}
+p{margin:0 0 1em;text-wrap:pretty}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad)}
+.eyebrow{font:600 12.5px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--mauve);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:2px;background:currentColor;border-radius:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:6px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font:600 16px/1 var(--sans);text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .2s ease,background .2s ease,color .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--purple);color:var(--cream)}
+.btn-primary:hover{background:var(--purple-deep)}
+.btn-ghost{border-color:var(--purple);color:var(--purple)}
+.btn-ghost:hover{background:var(--purple);color:var(--cream)}
+.btn-sun{background:var(--sun);color:var(--purple-ink)}
+.btn .arr{transition:transform .2s}
+.btn:hover .arr{transform:translateX(3px)}
+
+/* header */
+.top{position:sticky;top:0;z-index:50;background:rgba(244,237,228,.92);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid transparent;transition:border-color .2s}
+.top.scrolled{border-color:var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo-crop{display:block;width:150px;height:61px;overflow:hidden;position:relative;flex:none}
+.logo-crop svg{position:absolute;width:169.2px;height:112.8px;left:-15.8px;top:-21.4px;max-width:none}
+.nav{display:none;gap:28px;font-weight:500;font-size:15.5px}
+.nav a{text-decoration:none;color:var(--ink);opacity:.82;padding:6px 0;border-bottom:2px solid transparent}
+.nav a:hover{opacity:1;border-color:var(--sun)}
+.top-actions{display:flex;align-items:center;gap:10px}
+.lang{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;padding:3px;background:var(--paper)}
+.lang button{all:unset;cursor:pointer;font:700 12.5px/1 var(--sans);letter-spacing:.08em;padding:9px 11px;border-radius:999px;color:var(--mauve);min-width:22px;text-align:center}
+.lang button[aria-pressed="true"]{background:var(--purple);color:var(--cream)}
+.top .btn{display:none;min-height:42px;padding:0 18px;font-size:15px}
+.menu-btn{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--purple);color:var(--cream)}
+.menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;width:18px;height:2px;background:currentColor;border-radius:2px;position:relative;transition:transform .2s}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0}
+.menu-btn span::before{top:-6px}.menu-btn span::after{top:6px}
+.top.open .menu-btn span{background:transparent}.top.open .menu-btn span::before{transform:translateY(6px) rotate(45deg)}.top.open .menu-btn span::after{transform:translateY(-6px) rotate(-45deg)}
+@media (max-width:979px){.top.open .nav{display:flex;flex-direction:column;gap:0;position:absolute;left:0;right:0;top:100%;background:var(--cream);padding:8px var(--pad) 20px;border-bottom:1px solid var(--line);box-shadow:0 20px 30px rgba(36,6,39,.08)}.top.open .nav a{font:600 24px/1 var(--serif);color:var(--purple);padding:16px 0;border-bottom:1px solid var(--line);opacity:1}}
+@media (min-width:980px){.nav{display:flex}.top .btn{display:inline-flex}.menu-btn{display:none}.logo-crop{width:184px;height:75px}.logo-crop svg{width:207.5px;height:138.3px;left:-19.4px;top:-26.3px}.top .wrap{height:80px}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:28px 0 64px}
+.hero .wrap{display:grid;gap:36px;align-items:center}
+.hero h1{font-size:clamp(46px,11vw,104px);font-weight:600;color:var(--purple);line-height:.96;letter-spacing:-.03em}
+.hero h1 em{display:block;font-style:italic;font-weight:400;color:var(--green)}
+.hero .lede{font-size:clamp(18px,2.2vw,21px);max-width:34ch;color:var(--muted);margin:22px 0 28px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:34px;font:600 13px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--mauve)}
+.route i{width:28px;height:1.5px;background:repeating-linear-gradient(90deg,var(--mauve) 0 4px,transparent 4px 8px)}
+.hero-art{position:relative;aspect-ratio:1/1;max-width:560px;width:100%;justify-self:center}
+.hero-art .sun{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7B877,var(--sun) 55%,#E07F2E)}
+.hero-art .disc{position:absolute;inset:0;border-radius:50%;background:var(--purple);clip-path:inset(52% 0 0 0);}
+.hero-art .bowl{position:absolute;inset:12%;filter:drop-shadow(0 30px 40px rgba(36,6,39,.35))}
+.hero-art .tag{position:absolute;right:0;top:8%;background:var(--paper);border-radius:999px;padding:10px 16px;font:600 13px/1.1 var(--sans);color:var(--purple);box-shadow:0 10px 30px rgba(36,6,39,.12);transform:rotate(6deg)}
+.hero-art .tag b{color:var(--green)}
+.hero-leaf{position:absolute;width:140px;left:-10px;bottom:6%;transform:rotate(-20deg);opacity:.95}
+@media (min-width:900px){.hero{padding:56px 0 96px}.hero .wrap{grid-template-columns:1.1fr .9fr;gap:40px}}
+
+/* marquee */
+.marquee{background:var(--purple);color:var(--cream);overflow:hidden;white-space:nowrap;padding:14px 0;font:italic 400 22px/1 var(--serif)}
+.marquee .track{display:inline-flex;gap:36px;animation:mq 38s linear infinite;padding-left:36px}
+.marquee span::after{content:"✳";font-style:normal;color:var(--sun);margin-left:36px;font-size:16px;vertical-align:middle}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* sections */
+section{scroll-margin-top:80px}
+.sec{padding:clamp(72px,10vw,128px) 0}
+.sec-head{display:grid;gap:18px;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{font-size:clamp(36px,6vw,64px);color:var(--purple)}
+.sec-head p{max-width:52ch;color:var(--muted);font-size:18px;margin:0}
+@media (min-width:900px){.sec-head.split{grid-template-columns:1fr 1fr;align-items:end}}
+
+/* origin */
+.origin{background:var(--purple-ink);color:var(--cream);position:relative;overflow:hidden}
+.origin .sec-head h2{color:var(--cream)}
+.origin .sec-head p{color:var(--mauve-soft)}
+.origin .eyebrow{color:var(--sun)}
+.stops{display:grid;gap:0;position:relative;counter-reset:s}
+.stop{position:relative;padding:0 0 40px 56px}
+.stop::before{counter-increment:s;content:"0" counter(s);position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--sun);color:var(--sun);display:grid;place-items:center;font:600 14px/1 var(--sans)}
+.stop::after{content:"";position:absolute;left:19.5px;top:48px;bottom:8px;width:1.5px;background:repeating-linear-gradient(180deg,rgba(244,237,228,.35) 0 5px,transparent 5px 10px)}
+.stop:last-child::after{display:none}
+.stop .place{font:600 12.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mauve-soft);margin-bottom:10px}
+.stop h3{font-size:clamp(28px,3.4vw,38px);margin-bottom:12px;font-weight:400}
+.stop h3 em{color:var(--sun)}
+.stop p{color:rgba(244,237,228,.78);max-width:40ch}
+.route-map{margin:0 0 48px;opacity:.95}
+@media (min-width:900px){
+  .stops{grid-template-columns:repeat(3,1fr);gap:40px}
+  .stop{padding:64px 0 0}
+  .stop::before{top:0;left:0}
+  .stop::after{left:52px;right:-28px;top:19.5px;bottom:auto;width:auto;height:1.5px;background:repeating-linear-gradient(90deg,rgba(244,237,228,.35) 0 5px,transparent 5px 10px)}
+}
+.integration{margin-top:56px;padding-top:40px;border-top:1px solid rgba(244,237,228,.15);display:grid;gap:28px}
+.integration p.big{font:400 clamp(24px,3vw,34px)/1.25 var(--serif);margin:0;max-width:30ch}
+.integration p.big em{color:var(--sun)}
+.compare{display:grid;gap:14px;font-size:15.5px}
+.compare .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.compare .lbl{width:100%;font:600 12px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mauve-soft)}
+.chip{padding:7px 12px;border-radius:999px;border:1px solid rgba(244,237,228,.25);color:rgba(244,237,228,.85);font-weight:500}
+.chip.on{background:var(--sun);border-color:var(--sun);color:var(--purple-ink);font-weight:700}
+.compare .x{opacity:.45}
+@media (min-width:900px){.integration{grid-template-columns:1fr 1fr;align-items:center}}
+
+/* products */
+.products{background:var(--paper)}
+.prod-grid{display:grid;gap:20px}
+.prod{border-radius:var(--r);background:var(--cream);overflow:hidden;display:grid;position:relative}
+.prod .art{position:relative;display:grid;place-items:center;padding:28px;min-height:250px}
+.prod .body{padding:26px 26px 28px;display:flex;flex-direction:column;gap:10px}
+.prod h3{font-size:clamp(28px,3vw,36px);color:var(--purple)}
+.prod .fmt{font:600 12.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.prod p{color:var(--muted);margin:0}
+.prod ul{list-style:none;padding:0;margin:6px 0 0;display:flex;flex-wrap:wrap;gap:6px}
+.prod li{font-size:13.5px;font-weight:600;color:var(--purple);background:rgba(74,14,78,.07);padding:6px 11px;border-radius:999px}
+.price{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;margin-top:auto;padding-top:18px;border-top:1px dashed var(--line)}
+.price strong{font:600 28px/1 var(--serif);color:var(--purple);white-space:nowrap}
+.price small{font-size:12.5px;color:var(--mauve);font-weight:600;letter-spacing:.04em}
+.demo-badge{position:absolute;top:14px;left:14px;z-index:2;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;background:var(--paper);color:var(--mauve);padding:7px 10px;border-radius:999px}
+.prod.feat{background:var(--purple);color:var(--cream)}
+.prod.feat h3{color:var(--cream);font-size:clamp(34px,4.4vw,52px)}
+.prod.feat p{color:rgba(244,237,228,.8)}
+.prod.feat .fmt{color:var(--sun)}
+.prod.feat li{background:rgba(244,237,228,.12);color:var(--cream)}
+.prod.feat .price{border-color:rgba(244,237,228,.25)}
+.prod.feat .price strong{color:var(--cream)}
+.prod.feat .price small{color:var(--mauve-soft)}
+.prod.feat .art{background:radial-gradient(circle at 50% 60%,#6A1D6F 0,var(--purple) 60%)}
+.prod.b2b .art{background:linear-gradient(160deg,#E6DCEB,#D8C8DD)}
+.prod.gua .art{background:linear-gradient(160deg,#F8DCC0,#F2C29A)}
+@media (min-width:900px){
+  .prod-grid{grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto}
+  .prod.feat{grid-row:span 2;grid-template-rows:1fr auto}
+  .prod.feat .art{min-height:420px}
+  .prod:not(.feat){grid-template-columns:.9fr 1.1fr}
+  .prod:not(.feat) .art{min-height:100%}
+}
+.note{font-size:14px;color:var(--mauve);margin-top:22px}
+
+/* B2B */
+.b2b-sec{background:var(--green-deep);color:var(--cream);position:relative;overflow:hidden}
+.b2b-sec .eyebrow{color:#BFE0B5}
+.b2b-sec h2{color:var(--cream)}
+.b2b-sec .sec-head p{color:rgba(244,237,228,.8)}
+.b2b-grid{display:grid;gap:48px}
+.segments{display:grid;gap:0;border-top:1px solid rgba(244,237,228,.2)}
+.seg{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;padding:22px 0;border-bottom:1px solid rgba(244,237,228,.2)}
+.seg .n{font:italic 400 18px/1.4 var(--serif);color:var(--sun);grid-row:span 2}
+.seg h3{font-size:26px;font-weight:400}
+.seg p{margin:0;color:rgba(244,237,228,.78);font-size:16px}
+.freezer{margin-top:36px;background:var(--cream);color:var(--ink);border-radius:var(--r);padding:28px;display:grid;gap:20px;align-items:center}
+.freezer h3{font-size:28px;color:var(--purple);margin-bottom:8px}
+.freezer p{margin:0;color:var(--muted)}
+.freezer ol{margin:14px 0 0;padding-left:20px;color:var(--ink);font-size:15.5px}
+.freezer ol li{margin:4px 0}
+@media (min-width:640px){.freezer{grid-template-columns:150px 1fr}}
+.form-card{background:var(--paper);color:var(--ink);border-radius:var(--r);padding:clamp(24px,4vw,40px);box-shadow:0 30px 60px rgba(0,0,0,.18)}
+.form-card h3{font-size:30px;color:var(--purple);margin-bottom:6px}
+.form-card .sub{color:var(--muted);font-size:15.5px;margin-bottom:22px}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-weight:600;font-size:14px;color:var(--purple)}
+.field input,.field select,.field textarea{font:400 16px/1.4 var(--sans);color:var(--ink);background:#fff;border:1.5px solid rgba(74,14,78,.2);border-radius:12px;padding:12px 14px;min-height:48px;width:100%;transition:border-color .2s,box-shadow .2s}
+.field textarea{min-height:96px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 4px rgba(74,14,78,.12)}
+.two{display:grid;gap:0 14px}
+@media (min-width:560px){.two{grid-template-columns:1fr 1fr}}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--muted);margin:6px 0 20px}
+.check input{width:20px;height:20px;accent-color:var(--purple);margin-top:2px;flex:none}
+.form-card .btn{width:100%}
+.form-msg{display:none;margin-top:16px;padding:14px 16px;border-radius:12px;background:rgba(62,124,58,.12);color:var(--green-deep);font-weight:600;font-size:15px}
+.form-msg.show{display:block}
+@media (min-width:980px){.b2b-grid{grid-template-columns:1.05fr .95fr;align-items:start}}
+
+/* find us */
+.find-grid{display:grid;gap:28px}
+.map{border-radius:var(--r);overflow:hidden;background:#E9DFEA;position:relative}
+.map svg{width:100%;height:auto}
+.locs{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.locs li{display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.locs .pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--purple);display:grid;place-items:center}
+.locs .pin b{transform:rotate(45deg);color:var(--cream);font:700 13px/1 var(--sans)}
+.locs .pin.green{background:var(--green)}
+.locs h4{font:600 18px/1.2 var(--sans);color:var(--ink)}
+.locs p{margin:2px 0 0;font-size:14.5px;color:var(--muted)}
+.locs .kind{font:600 11.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--mauve);text-align:right}
+@media (min-width:900px){.find-grid{grid-template-columns:1.2fr .8fr;align-items:center;gap:56px}}
+
+/* sustainability */
+.sust{background:var(--cream-2)}
+.sust-grid{display:grid;gap:40px}
+.sust .quote{font:400 clamp(28px,4vw,46px)/1.15 var(--serif);color:var(--purple);letter-spacing:-.01em;margin:0}
+.sust .quote em{color:var(--green)}
+.pillars{display:grid;gap:0;counter-reset:p}
+.pillar{padding:24px 0;border-top:1.5px solid var(--purple);display:grid;gap:8px}
+.pillar h3{font-size:24px;color:var(--purple);display:flex;gap:14px;align-items:baseline}
+.pillar h3::before{counter-increment:p;content:counter(p,upper-roman) ".";font:italic 400 18px/1 var(--serif);color:var(--green);min-width:28px}
+.pillar p{margin:0 0 0 42px;color:var(--muted)}
+.pillar .flag{margin-left:42px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mauve)}
+@media (min-width:900px){.sust-grid{grid-template-columns:.9fr 1.1fr;gap:72px}.sust .quote{position:sticky;top:120px}}
+
+/* gram */
+.gram-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px;margin-bottom:32px}
+.gram-head h2{font-size:clamp(34px,5vw,56px);color:var(--purple)}
+.handle{font:600 16px/1 var(--sans);color:var(--purple);text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-bottom:2px solid var(--sun);padding-bottom:4px}
+.gram{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (min-width:760px){.gram{grid-template-columns:repeat(4,1fr);gap:14px}}
+.tile{aspect-ratio:1/1;border-radius:14px;overflow:hidden;position:relative;display:grid;place-items:center;transition:transform .3s ease}
+.tile:hover{transform:scale(.98)}
+.tile svg{width:100%;height:100%}
+.tile .cap{position:absolute;inset:auto 12px 12px auto;font:700 10.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--cream);background:rgba(36,6,39,.45);padding:6px 8px;border-radius:999px;opacity:0;transition:opacity .2s}
+.tile:hover .cap{opacity:1}
+.t-type{background:var(--purple);color:var(--cream);padding:12%;place-items:start;align-content:space-between}
+.t-type p{font:600 clamp(22px,3vw,34px)/1.02 var(--serif);margin:0;letter-spacing:-.02em}
+.t-type p em{font-weight:400;color:var(--sun)}
+.t-type small{font:700 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mauve-soft)}
+.t-dots{background:conic-gradient(from 200deg at 50% 50%,#4A0E4E,#6A1D6F,#3A0B3E,#4A0E4E)}
+.t-dots::before{content:"";position:absolute;inset:-20%;border-radius:50%;background:radial-gradient(circle at 50% 50%,transparent 0 30%,rgba(244,237,228,.08) 30.5% 31%,transparent 31.5% 40%,rgba(244,237,228,.08) 40.5% 41%,transparent 41.5% 50%,rgba(244,237,228,.08) 50.5% 51%,transparent 51.5%)}
+.t-dots .half{position:relative;width:62%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 50%,#F4EDE4 0 22%,#E9D7C9 23% 26%,#7B2A80 27% 60%,#4A0E4E 61% 92%,#2E0832 93%);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.t-dots .half::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.3) 0 7%,transparent 8%)}
+.t-km{background:var(--cream-2);color:var(--purple);padding:12%;place-items:start;align-content:space-between}
+.t-km b{font:800 clamp(44px,6vw,72px)/.9 var(--serif);letter-spacing:-.04em}
+.t-km span{font:600 14px/1.3 var(--sans);color:var(--mauve)}
+
+/* footer */
+footer{background:var(--purple-ink);color:rgba(244,237,228,.8);padding:72px 0 28px;font-size:15.5px}
+.foot-grid{display:grid;gap:40px}
+.foot-logo{width:220px;border-radius:14px;overflow:hidden}
+.foot-logo svg{width:100%;height:auto}
+footer h4{font:600 12.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--sun);margin-bottom:16px}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+footer a{text-decoration:none}
+footer a:hover{color:var(--cream);text-decoration:underline}
+.news{display:flex;gap:8px;margin-top:14px}
+.news input{flex:1;min-width:0;min-height:46px;border-radius:999px;border:1.5px solid rgba(244,237,228,.25);background:transparent;color:var(--cream);padding:0 18px;font:400 15px var(--sans)}
+.news input::placeholder{color:rgba(244,237,228,.5)}
+.news .btn{min-height:46px;padding:0 18px}
+.foot-bottom{margin-top:56px;padding-top:22px;border-top:1px solid rgba(244,237,228,.14);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:13.5px;color:rgba(244,237,228,.55)}
+.demo-pill{display:inline-flex;align-items:center;gap:8px;color:var(--cream);background:rgba(242,153,74,.18);border:1px solid rgba(242,153,74,.5);padding:6px 12px;border-radius:999px;font-weight:600}
+.demo-pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sun)}
+@media (min-width:900px){.foot-grid{grid-template-columns:1.3fr 1fr 1fr 1.4fr}}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.marquee .track{animation:none}html{scroll-behavior:auto}.btn,.tile{transition:none}}
+</style>
+</head>
+<body>
+
+<!-- reusable illustration symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="acaiG" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#7B2A80"/><stop offset=".55" stop-color="#4A0E4E"/><stop offset="1" stop-color="#2E0832"/></radialGradient>
+    <radialGradient id="rimG" cx="50%" cy="40%" r="60%"><stop offset=".8" stop-color="#F4EDE4"/><stop offset="1" stop-color="#D9CBBE"/></radialGradient>
+    <radialGradient id="berryG" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#6C2A73"/><stop offset=".6" stop-color="#3A0B3E"/><stop offset="1" stop-color="#22051F"/></radialGradient>
+    <symbol id="leaf" viewBox="0 0 100 60"><path d="M4 56 C 20 10, 70 0, 96 6 C 84 34, 46 60, 4 56 Z" fill="#3E7C3A"/><path d="M8 53 C 36 38, 62 22, 92 8" stroke="#2C5A29" stroke-width="2.4" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="banana" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#F6E7B0"/><circle cx="20" cy="20" r="14" fill="#FBF0C9"/><g fill="#C9A86A"><circle cx="20" cy="15" r="1.4"/><circle cx="15.5" cy="22" r="1.4"/><circle cx="24.5" cy="22" r="1.4"/></g></symbol>
+    <symbol id="berry" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="url(#berryG)"/><circle cx="7" cy="6.5" r="2.2" fill="#fff" opacity=".35"/></symbol>
+    <symbol id="bowl" viewBox="0 0 400 400">
+      <circle cx="200" cy="200" r="196" fill="url(#rimG)"/>
+      <circle cx="200" cy="200" r="172" fill="#E3D6C8"/>
+      <circle cx="200" cy="200" r="164" fill="url(#acaiG)"/>
+      <path d="M90 170 q60 -40 120 -10 t110 0" stroke="#fff" stroke-opacity=".08" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <g fill="#B9824A"><path d="M248 98 l14 -6 10 9 -4 14 -15 2 z"/><path d="M276 120 l12 -2 6 11 -9 9 -11 -6 z"/><path d="M262 140 l14 -3 7 12 -10 8 -12 -5z" fill="#A46F3A"/><path d="M298 150 l10 0 5 10 -8 7 -10 -5z"/><path d="M286 172 l13 -2 5 11 -10 6 -10 -6z" fill="#C8935A"/><path d="M308 188 l9 2 2 10 -9 4 -6 -8z" fill="#A46F3A"/><path d="M296 208 l11 -1 4 10 -9 6 -8 -7z"/></g>
+      <use href="#banana" x="110" y="96" width="62" height="62" transform="rotate(-8 141 127)"/>
+      <use href="#banana" x="150" y="112" width="58" height="58"/>
+      <use href="#banana" x="188" y="96" width="54" height="54"/>
+      <use href="#berry" x="118" y="230" width="34" height="34"/><use href="#berry" x="146" y="250" width="30" height="30"/><use href="#berry" x="136" y="214" width="26" height="26"/><use href="#berry" x="170" y="240" width="28" height="28"/>
+      <g fill="#FBF7F1" opacity=".9"><circle cx="232" cy="248" r="3"/><circle cx="246" cy="262" r="2.5"/><circle cx="222" cy="270" r="2.5"/><circle cx="258" cy="244" r="2"/><circle cx="238" cy="284" r="2.5"/><circle cx="214" cy="292" r="2"/></g>
+      <use href="#leaf" x="196" y="196" width="86" height="52" transform="rotate(-25 239 222)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a href="#inicio" class="logo-crop" aria-label="morado, inicio" role="img"><svg viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#F4EDE4"/>
+  <path d="M66 70 q10 -24 34 -24 q-6 22 -34 24z" fill="#3E7C3A"/>
+  <circle cx="66" cy="102" r="30" fill="#4A0E4E"/>
+  <ellipse cx="56" cy="91" rx="8" ry="5" fill="#fff" opacity=".35" transform="rotate(-30 56 91)"/>
+  <text x="108" y="114" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="46" fill="#4A0E4E">morado</text>
+  <text x="110" y="136" font-family="Inter,Arial,sans-serif" font-size="10" letter-spacing="3" fill="#7A5A7E">AÇAÍ PURO DO BRASIL</text>
+</svg></a>
+    <nav class="nav" id="mainnav" aria-label="Principal">
+      <a href="#origen" data-en="Origin">Origen</a>
+      <a href="#productos" data-en="Products">Productos</a>
+      <a href="#negocio" data-en="For business">Para tu negocio</a>
+      <a href="#donde" data-en="Find us">Dónde</a>
+      <a href="#sostenibilidad" data-en="Sourcing">Origen responsable</a>
+    </nav>
+    <div class="top-actions">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="#contacto" class="btn btn-primary" data-en="Order wholesale">Pedir para mi local</a>
+      <button class="menu-btn" type="button" aria-label="Menú" aria-expanded="false" aria-controls="mainnav"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div class="rv">
+      <span class="eyebrow" data-en="Açaí puro do Brasil · Málaga">Açaí puro do Brasil · Málaga</span>
+      <h1 style="margin-top:20px" data-en="From the Amazon &lt;em&gt;to your bowl.&lt;/em&gt;">Del Amazonas <em>a tu bowl.</em></h1>
+      <p class="lede" data-en="Pure açaí from Pará, frozen in our own Lisbon factory and brought straight to the Costa del Sol. No middlemen, no added sugar, nothing to hide.">Açaí puro de Pará, congelado en nuestra propia fábrica de Lisboa y traído directo a la Costa del Sol. Sin intermediarios, sin azúcar añadido, sin cuentos.</p>
+      <div class="ctas">
+        <a href="#productos" class="btn btn-primary"><span data-en="See the range">Ver productos</span> <span class="arr">→</span></a>
+        <a href="#negocio" class="btn btn-ghost" data-en="For cafés &amp; gyms">Para cafés y gimnasios</a>
+      </div>
+      <div class="route" aria-label="Pará → Lisboa → Málaga"><span>Pará</span><i></i><span>Lisboa</span><i></i><span>Málaga</span></div>
+    </div>
+    <div class="hero-art rv" aria-hidden="true">
+      <div class="sun"></div>
+      <div class="disc" style="inset:6%"></div>
+      <svg class="bowl" viewBox="0 0 400 400"><use href="#bowl"/></svg>
+      <svg class="hero-leaf" viewBox="0 0 100 60"><use href="#leaf"/></svg>
+      <div class="tag"><span data-en="0 g added sugar">0 g azúcar añadido</span><br><b data-en="in Morado Puro">en Morado Puro</b></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>Açaí puro do Brasil</span><span>Del Amazonas a tu bowl</span><span>Hecho en Lisboa, servido en Málaga</span><span>Sin intermediarios</span>
+  <span>Açaí puro do Brasil</span><span>Del Amazonas a tu bowl</span><span>Hecho en Lisboa, servido en Málaga</span><span>Sin intermediarios</span>
+</div></div>
+
+<!-- ORIGIN -->
+<section class="sec origin" id="origen">
+  <div class="wrap">
+    <div class="sec-head split rv">
+      <div><span class="eyebrow" data-en="Our story">Nuestra historia</span>
+      <h2 style="margin-top:18px" data-en="One route. &lt;em&gt;Three stops.&lt;/em&gt; Zero middlemen.">Una ruta. <em>Tres paradas.</em> Cero intermediarios.</h2></div>
+      <p data-en="Most açaí in Spain changes hands several times before it reaches your spoon. Ours travels one route, owned end to end by the same family business.">La mayoría del açaí en España pasa por varias manos antes de llegar a tu cuchara. El nuestro recorre una sola ruta, de principio a fin con la misma empresa.</p>
+    </div>
+    <div class="stops">
+      <div class="stop rv">
+        <div class="place">Pará · Brasil</div>
+        <h3 data-en="Harvested on the &lt;em&gt;river&lt;/em&gt;">Cosechado junto al <em>río</em></h3>
+        <p data-en="Açaí palms grow on the floodplains of the Amazon estuary. The berries are picked by hand and pulped within hours, because açaí starts losing its colour and flavour fast.">Las palmeras de açaí crecen en las várzeas del estuario amazónico. Las bayas se recogen a mano y se despulpan en pocas horas, porque el açaí pierde color y sabor muy rápido.</p>
+      </div>
+      <div class="stop rv">
+        <div class="place">Lisboa · Portugal</div>
+        <h3 data-en="Made in &lt;em&gt;our&lt;/em&gt; factory">Elaborado en <em>nuestra</em> fábrica</h3>
+        <p data-en="The frozen pulp arrives at our own processing plant in Lisbon. That is where we portion it, blend the bowls and keep the cold chain unbroken.">La pulpa congelada llega a nuestra propia planta en Lisboa. Allí la porcionamos, preparamos los bowls y mantenemos la cadena de frío sin interrupciones.</p>
+      </div>
+      <div class="stop rv">
+        <div class="place">Málaga · España</div>
+        <h3 data-en="Served on the &lt;em&gt;coast&lt;/em&gt;">Servido en la <em>costa</em></h3>
+        <p data-en="About 600 km by refrigerated truck, from our freezer to yours. Short route, fewer hands, fresher product on the Costa del Sol.">Unos 600 km en camión frigorífico, de nuestro congelador al tuyo. Ruta corta, menos manos y un producto más fresco en la Costa del Sol.</p>
+      </div>
+    </div>
+    <div class="integration rv">
+      <p class="big" data-en="Vertical integration sounds technical. For you it means &lt;em&gt;fresher açaí at a fairer price.&lt;/em&gt;">Integración vertical suena técnico. Para ti significa <em>açaí más fresco a un precio más justo.</em></p>
+      <div class="compare">
+        <div class="row"><span class="lbl" data-en="Typical route">Ruta habitual</span><span class="chip">Brasil</span><span class="x">→</span><span class="chip" data-en="Importer">Importador</span><span class="x">→</span><span class="chip" data-en="Distributor">Distribuidor</span><span class="x">→</span><span class="chip" data-en="Wholesaler">Mayorista</span><span class="x">→</span><span class="chip" data-en="You">Tú</span></div>
+        <div class="row"><span class="lbl" data-en="Morado route">Ruta Morado</span><span class="chip on">Brasil</span><span class="x">→</span><span class="chip on" data-en="Lisbon (ours)">Lisboa (nuestra)</span><span class="x">→</span><span class="chip on" data-en="You">Tú</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="sec products" id="productos">
+  <div class="wrap">
+    <div class="sec-head split rv">
+      <div><span class="eyebrow" data-en="The range">La gama</span>
+      <h2 style="margin-top:18px" data-en="Three ways to go purple.">Tres formas de ponerse morado.</h2></div>
+      <p data-en="Start with pure pulp for your own recipes, or serve a ready-made bowl in seconds. Every product ships frozen from Lisbon.">Empieza con pulpa pura para tus recetas o sirve un bowl listo en segundos. Todo sale congelado desde Lisboa.</p>
+    </div>
+    <div class="prod-grid">
+      <article class="prod feat rv">
+        <span class="demo-badge" data-en="Bestseller · demo">Más vendido · demo</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 300" style="width:min(100%,420px)">
+            <g transform="translate(40 40) rotate(-8 90 110)">
+              <rect x="0" y="0" width="180" height="220" rx="10" fill="#2E0832"/>
+              <rect x="0" y="0" width="180" height="14" fill="#240627"/><g fill="#4A0E4E"><rect x="6" y="3" width="8" height="8" rx="1"/><rect x="22" y="3" width="8" height="8" rx="1"/><rect x="38" y="3" width="8" height="8" rx="1"/><rect x="54" y="3" width="8" height="8" rx="1"/><rect x="70" y="3" width="8" height="8" rx="1"/><rect x="86" y="3" width="8" height="8" rx="1"/><rect x="102" y="3" width="8" height="8" rx="1"/><rect x="118" y="3" width="8" height="8" rx="1"/><rect x="134" y="3" width="8" height="8" rx="1"/><rect x="150" y="3" width="8" height="8" rx="1"/><rect x="166" y="3" width="8" height="8" rx="1"/></g>
+              <rect x="18" y="34" width="144" height="150" rx="6" fill="#F4EDE4"/>
+              <use href="#leaf" x="46" y="50" width="34" height="20" transform="rotate(-30 63 60)"/><circle cx="58" cy="80" r="14" fill="#4A0E4E"/>
+              <text x="80" y="86" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="22" fill="#4A0E4E">morado</text>
+              <text x="90" y="126" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="600" font-style="italic" font-size="26" fill="#3E7C3A">Puro</text>
+              <text x="90" y="150" text-anchor="middle" font-family="Source Sans 3,Arial" font-weight="700" font-size="9" letter-spacing="2.4" fill="#7A5A7E">SIN AZÚCAR · 100 G</text>
+              <rect x="18" y="166" width="144" height="18" fill="#F2994A"/><text x="90" y="179" text-anchor="middle" font-family="Source Sans 3,Arial" font-weight="700" font-size="9" letter-spacing="2" fill="#240627">AÇAÍ PURO DO BRASIL</text>
+            </g>
+            <g transform="translate(170 70) rotate(9 80 100)" opacity=".95">
+              <rect x="0" y="0" width="160" height="200" rx="10" fill="#5E1C63"/>
+              <rect x="16" y="30" width="128" height="136" rx="6" fill="#EBE1D4"/>
+              <circle cx="80" cy="84" r="26" fill="#4A0E4E"/><use href="#leaf" x="74" y="38" width="40" height="24" transform="rotate(-20 94 50)"/>
+              <text x="80" y="140" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="20" fill="#4A0E4E">morado</text>
+            </g>
+            <use href="#berry" x="18" y="250" width="30" height="30"/><use href="#berry" x="44" y="262" width="22" height="22"/><use href="#berry" x="300" y="34" width="26" height="26"/>
+          </svg>
+        </div>
+        <div class="body">
+          <span class="fmt" data-en="Unsweetened pulp · 100 g packs">Pulpa sin azúcar · packs de 100 g</span>
+          <h3>Morado Puro</h3>
+          <p data-en="100% açaí pulp, nothing added. Blend it from frozen with banana for a classic Pará-style bowl, or use it in smoothies and desserts.">Pulpa 100 % açaí, sin nada añadido. Bátela congelada con plátano para un bowl clásico al estilo de Pará, o úsala en smoothies y postres.</p>
+          <ul><li data-en="No added sugar">Sin azúcar añadido</li><li>Vegano</li><li data-en="Frozen −18 °C">Congelado −18 °C</li></ul>
+          <div class="price"><strong>€ 0,00</strong><small data-en="Demo price · box of 4 × 100 g">Precio demo · caja 4 × 100 g</small></div>
+        </div>
+      </article>
+
+      <article class="prod b2b rv">
+        <span class="demo-badge" data-en="Foodservice">Hostelería</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 220 220" style="width:min(100%,220px)">
+            <ellipse cx="110" cy="196" rx="80" ry="10" fill="#4A0E4E" opacity=".15"/>
+            <path d="M40 70 L52 186 Q110 200 168 186 L180 70 Z" fill="#F4EDE4"/>
+            <path d="M40 70 L52 186 Q110 200 168 186 L180 70 Z" fill="none" stroke="#C9B4C6" stroke-width="2"/>
+            <ellipse cx="110" cy="70" rx="72" ry="16" fill="#4A0E4E"/>
+            <ellipse cx="110" cy="66" rx="72" ry="16" fill="#5E1C63"/>
+            <rect x="58" y="104" width="104" height="54" rx="4" fill="#4A0E4E"/>
+            <text x="110" y="128" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="20" fill="#F4EDE4">morado</text>
+            <text x="110" y="146" text-anchor="middle" font-family="Source Sans 3,Arial" font-weight="700" font-size="9" letter-spacing="2" fill="#F2994A">BOWL · 3,6 KG</text>
+          </svg>
+        </div>
+        <div class="body">
+          <span class="fmt" data-en="Ready-to-serve sorbet · 3.6 kg tub">Sorbete listo para servir · tarrina 3,6 kg</span>
+          <h3>Morado Bowl</h3>
+          <p data-en="Smooth, scoopable açaí sorbet for cafés, gyms and beach clubs. Scoop, top, serve.">Sorbete de açaí cremoso y fácil de servir para cafeterías, gimnasios y chiringuitos. Sacar, decorar, servir.</p>
+          <div class="price"><strong>€ 00,00</strong><small data-en="Demo price · per tub">Precio demo · por tarrina</small></div>
+        </div>
+      </article>
+
+      <article class="prod gua rv">
+        <span class="demo-badge" data-en="New">Nuevo</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 220 220" style="width:min(100%,220px)">
+            <g transform="rotate(-6 110 110)">
+              <rect x="50" y="20" width="120" height="170" rx="10" fill="#4A0E4E"/>
+              <rect x="50" y="118" width="120" height="40" fill="#F2994A"/>
+              <text x="110" y="62" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="22" fill="#F4EDE4">morado</text>
+              <text x="110" y="92" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-style="italic" font-size="15" fill="#F2994A">con Guaraná</text>
+              <g><circle cx="86" cy="138" r="9" fill="#B3261E"/><circle cx="86" cy="138" r="5" fill="#F4EDE4"/><circle cx="86" cy="138" r="3" fill="#240627"/><circle cx="110" cy="138" r="9" fill="#B3261E"/><circle cx="110" cy="138" r="5" fill="#F4EDE4"/><circle cx="110" cy="138" r="3" fill="#240627"/><circle cx="134" cy="138" r="9" fill="#B3261E"/><circle cx="134" cy="138" r="5" fill="#F4EDE4"/><circle cx="134" cy="138" r="3" fill="#240627"/></g>
+              <text x="110" y="178" text-anchor="middle" font-family="Source Sans 3,Arial" font-weight="700" font-size="8" letter-spacing="1.6" fill="#C9B4C6">100 G · GUARANÁ</text>
+            </g>
+          </svg>
+        </div>
+        <div class="body">
+          <span class="fmt" data-en="Açaí + guaraná · 100 g packs">Açaí + guaraná · packs de 100 g</span>
+          <h3>Morado con Guaraná</h3>
+          <p data-en="The way it is eaten in Brazil before the beach or the gym: açaí with a touch of guaraná for a natural lift.">Como se toma en Brasil antes de la playa o el gimnasio: açaí con un toque de guaraná para un impulso natural.</p>
+          <div class="price"><strong>€ 0,00</strong><small data-en="Demo price · box of 4">Precio demo · caja de 4</small></div>
+        </div>
+      </article>
+    </div>
+    <p class="note" data-en="All prices, formats and product details on this page are placeholders for a demo site.">Todos los precios, formatos y detalles de producto de esta página son ficticios (sitio de demostración).</p>
+  </div>
+</section>
+
+<!-- B2B -->
+<section class="sec b2b-sec" id="negocio">
+  <div class="wrap b2b-grid">
+    <div>
+      <div class="sec-head rv" style="margin-bottom:32px">
+        <span class="eyebrow" data-en="For your business">Para tu negocio</span>
+        <h2 style="font-size:clamp(36px,6vw,64px)" data-en="Put açaí on your menu this summer.">Pon açaí en tu carta este verano.</h2>
+        <p data-en="We supply cafés, gyms and beach clubs across Málaga directly from our factory. Short lead times, steady supply and a product your customers already search for.">Abastecemos a cafeterías, gimnasios y chiringuitos de Málaga directamente desde nuestra fábrica. Plazos cortos, suministro estable y un producto que tus clientes ya buscan.</p>
+      </div>
+      <div class="segments">
+        <div class="seg rv"><span class="n">i.</span><h3 data-en="Cafés &amp; brunch">Cafeterías y brunch</h3><p data-en="A photogenic, high-margin bowl that takes under a minute to serve.">Un bowl fotogénico y con buen margen que se sirve en menos de un minuto.</p></div>
+        <div class="seg rv"><span class="n">ii.</span><h3 data-en="Gyms &amp; studios">Gimnasios y estudios</h3><p data-en="Post-workout bowls and smoothies with Morado con Guaraná.">Bowls y smoothies post-entreno con Morado con Guaraná.</p></div>
+        <div class="seg rv"><span class="n">iii.</span><h3 data-en="Beach clubs &amp; chiringuitos">Beach clubs y chiringuitos</h3><p data-en="Cold, fresh and made for the Costa del Sol sun.">Frío, fresco y hecho para el sol de la Costa del Sol.</p></div>
+      </div>
+      <div class="freezer rv">
+        <svg viewBox="0 0 150 150" aria-hidden="true" style="width:130px">
+          <rect x="22" y="40" width="106" height="96" rx="10" fill="#4A0E4E"/>
+          <rect x="16" y="30" width="118" height="20" rx="6" fill="#5E1C63"/>
+          <rect x="30" y="58" width="90" height="56" rx="6" fill="#C9E4F0" opacity=".35"/>
+          <g><circle cx="52" cy="86" r="14" fill="#F4EDE4"/><circle cx="52" cy="86" r="10" fill="#2E0832"/><circle cx="82" cy="86" r="14" fill="#F4EDE4"/><circle cx="82" cy="86" r="10" fill="#2E0832"/></g>
+          <text x="75" y="129" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="13" fill="#F4EDE4">morado</text>
+          <use href="#leaf" x="98" y="10" width="40" height="24"/>
+        </svg>
+        <div>
+          <h3 data-en="Freezer loan program">Programa de congelador en préstamo</h3>
+          <p data-en="Qualifying venues get a branded Morado display freezer on loan, at no upfront cost. (Demo conditions.)">Los locales que cumplan las condiciones reciben un congelador expositor Morado en préstamo, sin coste inicial. (Condiciones demo.)</p>
+          <ol>
+            <li data-en="Tell us about your venue.">Cuéntanos sobre tu local.</li>
+            <li data-en="We agree a minimum monthly volume.">Acordamos un volumen mínimo mensual.</li>
+            <li data-en="We install the freezer and train your team.">Instalamos el congelador y formamos a tu equipo.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card rv" id="contacto">
+      <h3 data-en="Talk to our Málaga team">Habla con nuestro equipo en Málaga</h3>
+      <p class="sub" data-en="We reply within one business day. (Demo form: nothing is sent.)">Respondemos en un día laborable. (Formulario demo: no se envía nada.)</p>
+      <form id="leadForm" novalidate>
+        <div class="two">
+          <div class="field"><label for="f-name" data-en="Name">Nombre</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="f-biz" data-en="Business">Negocio</label><input id="f-biz" name="business" autocomplete="organization" required></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="f-mail">Email</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-tel" data-en="Phone">Teléfono</label><input id="f-tel" name="tel" type="tel" autocomplete="tel"></div>
+        </div>
+        <div class="field"><label for="f-type" data-en="Type of venue">Tipo de local</label>
+          <select id="f-type" name="type">
+            <option data-en="Café / brunch">Cafetería / brunch</option>
+            <option data-en="Gym / studio">Gimnasio / estudio</option>
+            <option data-en="Beach club / chiringuito">Beach club / chiringuito</option>
+            <option data-en="Shop / deli">Tienda / delicatessen</option>
+            <option data-en="Other">Otro</option>
+          </select></div>
+        <div class="field"><label for="f-msg" data-en="Message">Mensaje</label><textarea id="f-msg" name="msg" data-en-ph="E.g. how many bowls a week, do you need a freezer…" placeholder="P. ej. cuántos bowls a la semana, si necesitas congelador…"></textarea></div>
+        <label class="check"><input type="checkbox" checked> <span data-en="I'm interested in the freezer loan program.">Me interesa el programa de congelador en préstamo.</span></label>
+        <button class="btn btn-primary" type="submit"><span data-en="Send request">Enviar solicitud</span> <span class="arr">→</span></button>
+        <div class="form-msg" id="formMsg" role="status" aria-live="polite" data-en="Thanks! This is a demo site, so nothing was sent. In the real site our team would contact you.">¡Gracias! Esto es un sitio de demostración, así que no se ha enviado nada. En la web real nuestro equipo te contactaría.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE -->
+<section class="sec" id="donde">
+  <div class="wrap">
+    <div class="sec-head split rv">
+      <div><span class="eyebrow" data-en="Where to find us">Dónde encontrarnos</span>
+      <h2 style="margin-top:18px" data-en="Málaga first. Then the coast.">Primero Málaga. Después, la costa.</h2></div>
+      <p data-en="Example venues for the demo. Real locations will be announced at launch.">Locales de ejemplo para la demo. Los puntos de venta reales se anunciarán en el lanzamiento.</p>
+    </div>
+    <div class="find-grid">
+      <div class="map rv" aria-label="Mapa ilustrativo de Málaga (ficticio)" role="img">
+        <svg viewBox="0 0 640 420">
+          <rect width="640" height="420" fill="#F4EDE4"/>
+          <path d="M0 290 C 70 280, 120 300, 190 286 S 300 250, 340 262 S 430 300, 500 286 S 600 270, 640 278 L640 420 L0 420 Z" fill="#CBB8D0"/>
+          <path d="M0 312 C 80 306, 140 322, 200 310 S 310 280, 350 290 S 440 322, 510 310 S 610 296, 640 302" stroke="#F4EDE4" stroke-opacity=".6" stroke-width="2" fill="none"/>
+          <path d="M0 340 C 90 334, 160 348, 230 338 S 340 316, 380 324 S 470 350, 540 338 S 620 328, 640 332" stroke="#F4EDE4" stroke-opacity=".4" stroke-width="2" fill="none"/>
+          <path d="M296 268 l0 -22 l40 -6 l4 26" fill="#CBB8D0"/>
+          <path d="M250 0 C 260 80, 236 150, 262 270" stroke="#B9C9B0" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <g stroke="#E3D6C8" stroke-width="3" fill="none"><path d="M0 220 C 160 230, 420 200, 640 214"/><path d="M120 0 L 200 280"/><path d="M420 0 C 400 120, 430 200, 420 280"/><path d="M0 120 C 200 140, 380 110, 640 130"/></g>
+          <g fill="#3E7C3A" opacity=".18"><circle cx="520" cy="80" r="60"/><circle cx="580" cy="130" r="44"/><circle cx="80" cy="60" r="40"/></g>
+          <text x="40" y="390" font-family="Fraunces,Georgia,serif" font-style="italic" font-size="22" fill="#7A5A7E">Mar Mediterráneo</text>
+          <text x="560" y="60" font-family="Source Sans 3,Arial" font-weight="700" font-size="14" letter-spacing="2" fill="#3E7C3A">MONTES</text>
+          <g font-family="Source Sans 3,Arial" font-weight="700" font-size="17" fill="#2A1A2C">
+            <g transform="translate(300 200)"><path d="M0 0 c-15 -17 -20 -27 -20 -36 a20 20 0 0 1 40 0 c0 9 -5 19 -20 36z" fill="#4A0E4E"/><text x="0" y="-26" text-anchor="middle" dy="-5" fill="#F4EDE4">1</text><text x="26" y="-30">Centro</text></g>
+            <g transform="translate(232 246)"><path d="M0 0 c-15 -17 -20 -27 -20 -36 a20 20 0 0 1 40 0 c0 9 -5 19 -20 36z" fill="#4A0E4E"/><text x="0" y="-26" text-anchor="middle" dy="-5" fill="#F4EDE4">2</text><text x="-26" y="-30" text-anchor="end">Soho</text></g>
+            <g transform="translate(470 270)"><path d="M0 0 c-15 -17 -20 -27 -20 -36 a20 20 0 0 1 40 0 c0 9 -5 19 -20 36z" fill="#3E7C3A"/><text x="0" y="-26" text-anchor="middle" dy="-5" fill="#F4EDE4">3</text><text x="26" y="-30">Pedregalejo</text></g>
+            <g transform="translate(100 280)"><path d="M0 0 c-15 -17 -20 -27 -20 -36 a20 20 0 0 1 40 0 c0 9 -5 19 -20 36z" fill="#3E7C3A"/><text x="0" y="-26" text-anchor="middle" dy="-5" fill="#F4EDE4">4</text><text x="26" y="-30">Huelin</text></g>
+          </g>
+          <rect x="420" y="362" width="200" height="38" rx="19" fill="#FBF7F1"/><text x="520" y="386" text-anchor="middle" font-family="Source Sans 3,Arial" font-weight="700" font-size="14" letter-spacing="1.6" fill="#7A5A7E">MAPA ILUSTRATIVO</text>
+        </svg>
+      </div>
+      <ul class="locs rv">
+        <li><span class="pin"><b>1</b></span><div><h4>Café Ejemplo Centro</h4><p>Calle Ficticia 12 · Centro</p></div><span class="kind" data-en="Café">Cafetería</span></li>
+        <li><span class="pin"><b>2</b></span><div><h4>Estudio Demo Soho</h4><p>Calle de Muestra 4 · Soho</p></div><span class="kind" data-en="Gym">Gimnasio</span></li>
+        <li><span class="pin green"><b>3</b></span><div><h4>Chiringuito Placeholder</h4><p>Paseo Marítimo s/n · Pedregalejo</p></div><span class="kind">Beach club</span></li>
+        <li><span class="pin green"><b>4</b></span><div><h4>Mercado Ejemplo</h4><p>Avenida Demo 30 · Huelin</p></div><span class="kind" data-en="Shop">Tienda</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SUSTAINABILITY -->
+<section class="sec sust" id="sostenibilidad">
+  <div class="wrap sust-grid">
+    <div class="rv">
+      <span class="eyebrow" data-en="Sourcing">Origen responsable</span>
+      <p class="quote" style="margin-top:22px" data-en="Good açaí keeps the &lt;em&gt;forest standing.&lt;/em&gt; We want to know every step of ours.">El buen açaí mantiene <em>la selva en pie.</em> Queremos conocer cada paso del nuestro.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar rv"><h3 data-en="Wild-harvested, not cleared">Recolectado, no talado</h3><p data-en="Açaí grows on native palms in the Amazon floodplain, so a healthy harvest depends on a healthy forest.">El açaí crece en palmeras nativas de la várzea amazónica: una buena cosecha depende de un bosque sano.</p></div>
+      <div class="pillar rv"><h3 data-en="Traceable route">Ruta trazable</h3><p data-en="Because we process it ourselves in Lisbon, we can trace each batch from the supplier in Pará to the tub in Málaga.">Como lo procesamos nosotros en Lisboa, podemos seguir cada lote desde el proveedor en Pará hasta la tarrina en Málaga.</p></div>
+      <div class="pillar rv"><h3 data-en="Fewer trips, less waste">Menos viajes, menos desperdicio</h3><p data-en="One short refrigerated route instead of several warehouse hops. Recyclable outer packaging is on our roadmap.">Una ruta frigorífica corta en lugar de varios almacenes intermedios. El embalaje exterior reciclable está en nuestra hoja de ruta.</p><span class="flag" data-en="Goal · not yet certified">Objetivo · aún sin certificar</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- GRAM -->
+<section class="sec" id="instagram">
+  <div class="wrap">
+    <div class="gram-head rv">
+      <div><span class="eyebrow" data-en="On Instagram">En Instagram</span><h2 style="margin-top:16px" data-en="Purple, every day.">Morado, todos los días.</h2></div>
+      <a class="handle" href="#instagram">@morado.demo <span>↗</span></a>
+    </div>
+    <div class="gram">
+      <div class="tile rv" style="background:#C9B4C6"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="150" r="200" fill="#C9B4C6"/><use href="#bowl" x="40" y="40" width="220" height="220"/><use href="#leaf" x="196" y="22" width="80" height="48" transform="rotate(30 236 46)"/></svg><span class="cap">Bowl clásico</span></div>
+      <div class="tile t-type rv"><small>Morado Puro</small><p data-en="No sugar. &lt;em&gt;No stories.&lt;/em&gt;">Sin azúcar. <em>Sin cuentos.</em></p></div>
+      <div class="tile t-dots rv" aria-hidden="true"><span class="half"></span><span class="cap">#açaí</span></div>
+      <div class="tile rv" style="background:#F2994A"><svg viewBox="0 0 300 300" aria-hidden="true"><rect width="300" height="300" fill="#F7B877"/><circle cx="150" cy="128" r="80" fill="#F2994A"/><rect y="170" width="300" height="130" fill="#4A0E4E"/><g stroke="#F4EDE4" stroke-opacity=".35" stroke-width="3" fill="none"><path d="M0 200 q37 -10 75 0 t75 0 t75 0 t75 0"/><path d="M0 230 q37 -10 75 0 t75 0 t75 0 t75 0"/><path d="M0 260 q37 -10 75 0 t75 0 t75 0 t75 0"/></g><use href="#bowl" x="95" y="150" width="110" height="110"/></svg><span class="cap">Costa del Sol</span></div>
+      <div class="tile t-km rv"><span data-en="Lisbon → Málaga">Lisboa → Málaga</span><b>600 km</b><span data-en="from our freezer to yours">de nuestro congelador al tuyo</span></div>
+      <div class="tile rv" style="background:#2E0832"><svg viewBox="0 0 300 300" aria-hidden="true"><rect width="300" height="300" fill="#2E0832"/><g><use href="#berry" x="40" y="60" width="70" height="70"/><use href="#berry" x="100" y="40" width="60" height="60"/><use href="#berry" x="90" y="100" width="80" height="80"/><use href="#berry" x="160" y="80" width="64" height="64"/><use href="#berry" x="150" y="150" width="72" height="72"/><use href="#berry" x="60" y="160" width="62" height="62"/><use href="#berry" x="210" y="140" width="50" height="50"/></g><path d="M80 60 C 120 20, 200 20, 240 70" stroke="#3E7C3A" stroke-width="4" fill="none"/><use href="#leaf" x="200" y="30" width="70" height="42"/></svg><span class="cap">Pará</span></div>
+      <div class="tile rv" style="background:#3E7C3A"><svg viewBox="0 0 300 300" aria-hidden="true"><rect width="300" height="300" fill="#3E7C3A"/><g fill="#4F9348"><path d="M-20 150 C 20 40, 140 0, 220 10 C 190 90, 100 160, -20 150Z"/><path d="M320 140 C 280 250, 160 300, 80 300 C 110 220, 200 140, 320 140Z"/></g><g stroke="#3E7C3A" stroke-width="3" fill="none"><path d="M-10 146 C 60 100, 140 50, 214 14"/><path d="M310 144 C 240 190, 160 250, 86 296"/></g><g transform="translate(150 150) rotate(-8)"><rect x="-55" y="-70" width="110" height="140" rx="8" fill="#4A0E4E"/><rect x="-55" y="12" width="110" height="28" fill="#F2994A"/><text x="0" y="-26" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="20" fill="#F4EDE4">morado</text><text x="0" y="31" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-style="italic" font-size="13" fill="#240627">con Guaraná</text></g></svg><span class="cap">Nuevo</span></div>
+      <div class="tile rv" style="background:#F4EDE4;border:1px solid var(--line)"><svg viewBox="0 0 300 300" aria-hidden="true"><rect width="300" height="300" fill="#FBF7F1"/><g transform="translate(150 175)"><path d="M-100 -30 L100 -30 Q96 60 0 72 Q-96 60 -100 -30Z" fill="#A44A2A"/><path d="M-80 0 Q0 18 80 0" stroke="#C7684A" stroke-width="3" fill="none"/><ellipse cx="0" cy="-30" rx="100" ry="22" fill="#4A0E4E"/><use href="#banana" x="-58" y="-56" width="36" height="36"/><use href="#banana" x="-26" y="-60" width="34" height="34"/><use href="#berry" x="16" y="-52" width="22" height="22"/><use href="#berry" x="34" y="-44" width="18" height="18"/><g fill="#B9824A"><circle cx="60" cy="-36" r="5"/><circle cx="48" cy="-26" r="4"/><circle cx="-70" cy="-30" r="4"/></g></g><text x="150" y="70" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-style="italic" font-size="22" fill="#4A0E4E">como no Pará</text></svg><span class="cap">Cuia</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo" role="img" aria-label="morado · Açaí puro do Brasil"><svg viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#F4EDE4"/>
+  <path d="M66 70 q10 -24 34 -24 q-6 22 -34 24z" fill="#3E7C3A"/>
+  <circle cx="66" cy="102" r="30" fill="#4A0E4E"/>
+  <ellipse cx="56" cy="91" rx="8" ry="5" fill="#fff" opacity=".35" transform="rotate(-30 56 91)"/>
+  <text x="108" y="114" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="46" fill="#4A0E4E">morado</text>
+  <text x="110" y="136" font-family="Inter,Arial,sans-serif" font-size="10" letter-spacing="3" fill="#7A5A7E">AÇAÍ PURO DO BRASIL</text>
+</svg></div>
+        <p style="margin-top:18px;max-width:30ch" data-en="Pure açaí from Pará, made in Lisbon, served in Málaga.">Açaí puro de Pará, elaborado en Lisboa, servido en Málaga.</p>
+      </div>
+      <div><h4 data-en="Explore">Explora</h4><ul>
+        <li><a href="#origen" data-en="Our story">Nuestra historia</a></li>
+        <li><a href="#productos" data-en="Products">Productos</a></li>
+        <li><a href="#sostenibilidad" data-en="Sourcing">Origen responsable</a></li>
+        <li><a href="#donde" data-en="Where to find us">Dónde encontrarnos</a></li></ul></div>
+      <div><h4 data-en="Business">Negocios</h4><ul>
+        <li><a href="#negocio" data-en="Foodservice">Hostelería</a></li>
+        <li><a href="#negocio" data-en="Freezer loan">Congelador en préstamo</a></li>
+        <li><a href="#contacto" data-en="Contact">Contacto</a></li>
+        <li><a href="mailto:hola@morado.example">hola@morado.example</a></li></ul></div>
+      <div><h4>Newsletter</h4>
+        <p style="margin:0" data-en="New flavours and Málaga openings. (Demo, nothing is stored.)">Nuevos sabores y aperturas en Málaga. (Demo, no se guarda nada.)</p>
+        <form class="news" onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('input').placeholder=document.documentElement.lang==='en'?'Thanks! (demo)':'¡Gracias! (demo)'">
+          <label class="sr-only" for="nl">Email</label><input id="nl" type="email" placeholder="tu@email.com" data-en-ph="you@email.com"><button class="btn btn-sun" type="submit" data-en="Join">Unirme</button>
+        </form></div>
+    </div>
+    <div class="foot-bottom">
+      <span class="demo-pill" data-en="Demo site · fictional prices, venues and contact details">Sitio demo · precios, locales y contactos ficticios</span>
+      <span>© 2026 Morado · Málaga · Lisboa</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY='morado-lang';
+  var nodes=document.querySelectorAll('[data-en]');
+  nodes.forEach(function(n){ n.dataset.es=n.innerHTML; });
+  var ph=document.querySelectorAll('[data-en-ph]');
+  ph.forEach(function(n){ n.dataset.esPh=n.placeholder; });
+  function setLang(l){
+    document.documentElement.lang=l;
+    nodes.forEach(function(n){ n.innerHTML = l==='en' ? n.dataset.en : n.dataset.es; });
+    ph.forEach(function(n){ n.placeholder = l==='en' ? n.dataset.enPh : n.dataset.esPh; });
+    document.querySelectorAll('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.lang===l); });
+    document.title = l==='en' ? 'morado · Açaí puro do Brasil (demo)' : 'morado · Açaí puro do Brasil (demo)';
+    try{ localStorage.setItem(KEY,l); }catch(e){}
+  }
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click',function(){ setLang(b.dataset.lang); }); });
+  var saved='es'; try{ saved=localStorage.getItem(KEY)||'es'; }catch(e){}
+  if(saved!=='es') setLang(saved);
+
+  // mobile menu
+  var mb=document.querySelector('.menu-btn'), topEl=document.getElementById('top');
+  mb.addEventListener('click',function(){ var o=topEl.classList.toggle('open'); mb.setAttribute('aria-expanded',o); });
+  document.querySelectorAll('.nav a').forEach(function(a){ a.addEventListener('click',function(){ topEl.classList.remove('open'); mb.setAttribute('aria-expanded',false); }); });
+
+  // header border on scroll
+  var top=document.getElementById('top');
+  function onScroll(){ top.classList.toggle('scrolled', window.scrollY>8); }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // reveal
+  var rv=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); },{rootMargin:'0px 0px -8% 0px'});
+    rv.forEach(function(el){ io.observe(el); });
+  } else rv.forEach(function(el){ el.classList.add('in'); });
+
+  // demo form
+  var f=document.getElementById('leadForm'), msg=document.getElementById('formMsg');
+  f.addEventListener('submit',function(e){ e.preventDefault(); msg.classList.add('show'); f.reset(); });
+})();
+</script>
+</body>
+</html>

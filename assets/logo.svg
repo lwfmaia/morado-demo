@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#F4EDE4"/>
+  <path d="M66 70 q10 -24 34 -24 q-6 22 -34 24z" fill="#3E7C3A"/>
+  <circle cx="66" cy="102" r="30" fill="#4A0E4E"/>
+  <ellipse cx="56" cy="91" rx="8" ry="5" fill="#fff" opacity=".35" transform="rotate(-30 56 91)"/>
+  <text x="108" y="114" font-family="Fraunces,Georgia,serif" font-weight="800" font-size="46" fill="#4A0E4E">morado</text>
+  <text x="110" y="136" font-family="Inter,Arial,sans-serif" font-size="10" letter-spacing="3" fill="#7A5A7E">AÇAÍ PURO DO BRASIL</text>
+</svg>
